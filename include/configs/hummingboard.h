@@ -86,8 +86,10 @@
 #define CONFIG_PHY_ATHEROS
 #endif
 
-#if defined(CONFIG_MX6S)
+#if defined(CONFIG_MX6DL) || defined(CONFIG_MX6S)
 #define CONFIG_DEFAULT_FDT_FILE		"imx6dl-hummingboard.dtb"
+#elif defined(CONFIG_MX6Q)
+#define CONFIG_DEFAULT_FDT_FILE         "imx6q-hummingboard.dtb"
 #endif
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
