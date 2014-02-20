@@ -20,4 +20,4 @@
 # MA 02111-1307 USA
 #
 
-obj-y  := mx6_cubox-i.o
+obj-y  := mx6_cubox-i.o mx6_cubox-i_spl.o
