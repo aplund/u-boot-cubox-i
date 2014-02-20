@@ -124,8 +124,8 @@ iomux_v3_cfg_t const usdhc2_pads[] = {
 };
 iomux_v3_cfg_t const key_row1[] = {
 	/* Following is only for sensing if it's CuBox-i or HummingBoard */
-	MX6_PAD_KEY_ROW1__GPIO_4_9      | MUX_PAD_CTRL(UART_PAD_CTRL),
-}
+	MX6_PAD_KEY_ROW1__GPIO4_IO09      | MUX_PAD_CTRL(UART_PAD_CTRL),
+};
 #endif
 
 static void setup_iomux_uart(void)
