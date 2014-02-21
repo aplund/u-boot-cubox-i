@@ -153,7 +153,7 @@
 	"script=boot.scr\0" \
 	"bootfile=uImage\0" \
 	"bootenv=uEnv.txt\0" \
-	"console=ttymxc0\0" \
+	"console=ttymxc0,115200n8\0" \
 	"stdin=serial,usbkbd\0" \
 	"stdout=serial,vga\0" \
 	"stderr=serial,vga\0" \
