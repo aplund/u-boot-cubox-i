@@ -92,6 +92,8 @@
 #define CONFIG_CMD_FAT
 #define CONFIG_DOS_PARTITION
 
+#define CONFIG_SUPPORT_EMMC_BOOT
+
 /* Ethernet Configuration */
 #define CONFIG_FEC_MXC
 #ifdef CONFIG_FEC_MXC
