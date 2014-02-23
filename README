@@ -486,6 +486,22 @@ The following options need to be configured:
 		PBI commands can be used to configure SoC before it starts the execution.
 		Please refer doc/README.pblimage for more details
 
+		CONFIG_SYS_FSL_DDR_BE
+		Defines the DDR controller register space as Big Endian
+
+		CONFIG_SYS_FSL_DDR_LE
+		Defines the DDR controller register space as Little Endian
+
+		CONFIG_SYS_FSL_DDR_SDRAM_BASE_PHY
+		Physical address from the view of DDR controllers. It is the
+		same as CONFIG_SYS_DDR_SDRAM_BASE for  all Power SoCs. But
+		it could be different for ARM SoCs.
+
+		CONFIG_SYS_FSL_DDR_INTLV_256B
+		DDR controller interleaving on 256-byte. This is a special
+		interleaving mode, handled by Dickens for Freescale layerscape
+		SoCs with ARM core.
+
 - Intel Monahans options:
 		CONFIG_SYS_MONAHANS_RUN_MODE_OSC_RATIO
 
@@ -927,7 +943,6 @@ The following options need to be configured:
 		CONFIG_CMD_SAVEENV	  saveenv
 		CONFIG_CMD_FDC		* Floppy Disk Support
 		CONFIG_CMD_FAT		* FAT command support
-		CONFIG_CMD_FDOS		* Dos diskette Support
 		CONFIG_CMD_FLASH	  flinfo, erase, protect
 		CONFIG_CMD_FPGA		  FPGA device initialization support
 		CONFIG_CMD_FUSE		* Device fuse support
