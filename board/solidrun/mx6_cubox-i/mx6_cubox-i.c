@@ -67,7 +67,6 @@ DECLARE_GLOBAL_DATA_PTR;
 
 #define LED IMX_GPIO_NR(4, 29)
 
-int hb_cuboxi_ = 0; /* 1 is HummingBoard, 0 is CuBox-i */
 int dram_init(void)
 {
 	uint cpurev, imxtype;
