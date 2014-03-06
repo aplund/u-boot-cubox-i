@@ -14,7 +14,7 @@
 #include "mx6_common.h"
 #include <asm/arch/imx-regs.h>
 #include <asm/imx-common/gpio.h>
-#include <asm/sizes.h>
+#include <linux/sizes.h>
 
 #include "imx6_spl.h"
 
