@@ -489,8 +489,6 @@ endif
 # that (or fail if absent).  Otherwise, search for a linker script in a
 # standard location.
 
-LDSCRIPT_MAKEFILE_DIR = $(dir $(LDSCRIPT))
-
 ifndef LDSCRIPT
 	#LDSCRIPT := $(TOPDIR)/board/$(BOARDDIR)/u-boot.lds.debug
 	ifdef CONFIG_SYS_LDSCRIPT
@@ -515,8 +513,6 @@ ifndef LDSCRIPT
 	endif
 	ifeq ($(wildcard $(LDSCRIPT)),)
 		LDSCRIPT := $(TOPDIR)/arch/$(ARCH)/cpu/u-boot.lds
-		# We don't expect a Makefile here
-		LDSCRIPT_MAKEFILE_DIR =
 	endif
 endif
 
@@ -595,6 +591,7 @@ libs-y += fs/
 libs-y += net/
 libs-y += disk/
 libs-y += drivers/
+libs-$(CONFIG_DM) += drivers/core/
 libs-y += drivers/dma/
 libs-y += drivers/gpio/
 libs-y += drivers/i2c/
@@ -629,6 +626,8 @@ libs-y += lib/libfdt/
 libs-$(CONFIG_API) += api/
 libs-$(CONFIG_HAS_POST) += post/
 libs-y += test/
+libs-y += test/dm/
+libs-$(CONFIG_DM_DEMO) += drivers/demo/
 
 ifneq (,$(filter $(SOC), mx25 mx27 mx5 mx6 mx31 mx35 mxs vf610))
 libs-y += arch/$(ARCH)/imx-common/
@@ -637,7 +636,7 @@ endif
 libs-$(CONFIG_ARM) += arch/arm/cpu/
 libs-$(CONFIG_PPC) += arch/powerpc/cpu/
 
-libs-y += board/$(BOARDDIR)/
+libs-y += $(if $(BOARDDIR),board/$(BOARDDIR)/)
 
 libs-y := $(sort $(libs-y))
 
@@ -654,7 +653,7 @@ u-boot-main := $(libs-y)
 # Add GCC lib
 ifdef USE_PRIVATE_LIBGCC
 ifeq ("$(USE_PRIVATE_LIBGCC)", "yes")
-PLATFORM_LIBGCC = $(OBJTREE)/arch/$(ARCH)/lib/lib.a
+PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
 else
 PLATFORM_LIBGCC = -L $(USE_PRIVATE_LIBGCC) -lgcc
 endif
@@ -712,6 +711,7 @@ ALL-$(CONFIG_SPL) += spl/u-boot-spl.bin
 ALL-$(CONFIG_SPL_FRAMEWORK) += u-boot.img
 ALL-$(CONFIG_TPL) += tpl/u-boot-tpl.bin
 ALL-$(CONFIG_OF_SEPARATE) += u-boot.dtb u-boot-dtb.bin
+ALL-$(CONFIG_OF_HOSTFILE) += u-boot.dtb
 ifneq ($(CONFIG_SPL_TARGET),)
 ALL-$(CONFIG_SPL) += $(CONFIG_SPL_TARGET:"%"=%)
 endif
@@ -1067,6 +1067,13 @@ u-boot.lds: $(LDSCRIPT) prepare FORCE
 PHONY += nand_spl
 nand_spl: prepare
 	$(Q)$(MAKE) $(build)=nand_spl/board/$(BOARDDIR) all
+	@echo >&2
+	@echo >&2 "==================== WARNING ====================="
+	@echo >&2 "nand_spl will not be included in v2014.07 release."
+	@echo >&2 "Please switch over to SPL."
+	@echo >&2 "Otherwise, this board will be removed."
+	@echo >&2 "=================================================="
+	@echo >&2
 
 nand_spl/u-boot-spl-16k.bin: nand_spl
 	@:
@@ -1145,8 +1152,11 @@ checkarmreloc: u-boot
 env: scripts_basic
 	$(Q)$(MAKE) $(build)=tools/$@
 
-tools-all: HOST_TOOLS_ALL=y
+tools-all: export HOST_TOOLS_ALL=y
 tools-all: env tools ;
+
+cross_tools: export CROSS_BUILD_TOOLS=y
+cross_tools: tools ;
 
 .PHONY : CHANGELOG
 CHANGELOG:
